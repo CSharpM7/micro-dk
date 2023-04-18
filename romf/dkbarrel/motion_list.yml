@@ -1,0 +1,113 @@
+---
+motion_path: fighter/donkey/motion/dkbarrel/c00
+list:
+  entry_l:
+    game_script: game_entryl
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: false
+      unk_100: false
+      unk_200: false
+      unk_400: false
+    blend_frames: 0
+    animations:
+      - name: j00entryl.nuanmb
+        unk: 0
+    scripts:
+      - sound_entryl
+      - effect_entryl
+    extra: ~
+  entry_r:
+    game_script: game_entryr
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: false
+      unk_100: false
+      unk_200: false
+      unk_400: false
+    blend_frames: 0
+    animations:
+      - name: j00entryr.nuanmb
+        unk: 0
+    scripts:
+      - sound_entryr
+      - effect_entryr
+    extra: ~
+  special_air_hi:
+    game_script: game_specialairhi
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: true
+      unk_100: false
+      unk_200: false
+      unk_400: false
+    blend_frames: 0
+    animations:
+      - name: d02specialairhi.nuanmb
+        unk: 0
+    scripts:
+      - expression_specialairhi
+      - sound_specialairhi
+      - effect_specialairhi
+  special_air_hi_aim:
+    game_script: game_specialairhiaim
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: true
+      unk_100: false
+      unk_200: false
+      unk_400: false
+    blend_frames: 0
+    animations:
+      - name: d02specialairhiaim.nuanmb
+        unk: 0
+    scripts:
+      - expression_specialairhiaim
+      - sound_specialairhiaim
+      - effect_specialairhiaim
+  special_air_hi_launch:
+    game_script: game_specialairhilaunch
+    flags:
+      turn: false
+      loop: false
+      move: false
+      fix_trans: false
+      fix_rot: false
+      fix_scale: false
+      unk_40: false
+      unk_80: false
+      unk_100: false
+      unk_200: false
+      unk_400: false
+    blend_frames: 0
+    animations:
+      - name: d02specialairhilaunch.nuanmb
+        unk: 0
+    scripts:
+      - sound_specialairhilaunch
+      - effect_specialairhilaunch
+    extra: ~
