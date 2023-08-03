@@ -1,6 +1,6 @@
-use super::super::*;
+use crate::imports::imports_acmd::*;
 
-#[acmd_script( agent = "donkey", script = "game_specialhi", category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", script = "game_specialbarrel", category = ACMD_GAME )]
 unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     let boma = fighter.module_accessor;
 
@@ -12,7 +12,7 @@ unsafe fn game_specialhi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "game_speciallandinghi", category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", script = "game_speciallandingbarrel", category = ACMD_GAME )]
 unsafe fn game_speciallandinghi(fighter: &mut L2CAgentBase) {
     let boma = fighter.module_accessor;
 
@@ -33,7 +33,7 @@ unsafe fn game_speciallandinghi(fighter: &mut L2CAgentBase) {
     }
 }
 
-#[acmd_script( agent = "donkey", script = "effect_specialhi", category = ACMD_EFFECT )]
+#[acmd_script( agent = "donkey", script = "effect_specialbarrel", category = ACMD_EFFECT )]
 unsafe fn effect_specialhi(fighter: &mut L2CAgentBase) {
 
     frame(fighter.lua_state_agent, 61.0);
@@ -48,7 +48,7 @@ unsafe fn effect_specialhi(fighter: &mut L2CAgentBase) {
     if macros::is_excute(fighter) {
     }
 }
-#[acmd_script( agent = "donkey", script = "sound_specialhi", category = ACMD_SOUND )]
+#[acmd_script( agent = "donkey", script = "sound_specialbarrel", category = ACMD_SOUND )]
 unsafe fn sound_specialhi(fighter: &mut L2CAgentBase) {
     
     frame(fighter.lua_state_agent, 61.0);
@@ -58,7 +58,7 @@ unsafe fn sound_specialhi(fighter: &mut L2CAgentBase) {
 }
 
 //barrel_screw
-#[acmd_script( agent = "donkey", script = "game_specialairhi", category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", script = "game_specialairbarrel", category = ACMD_GAME )]
 unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     let boma = fighter.module_accessor;
     let mut barrelBoma = fighter.module_accessor;
@@ -88,14 +88,14 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "donkey", script = "effect_specialairhi", category = ACMD_EFFECT )]
+#[acmd_script( agent = "donkey", script = "effect_specialairbarrel", category = ACMD_EFFECT )]
 unsafe fn effect_specialairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         macros::EFFECT(fighter, Hash40::new("sys_item_arrival"), Hash40::new("top"), 0, 8, 0, 0, 0, 0, 1.5, 0, 0, 0, 0, 0, 0, true);
     }
 }
-#[acmd_script( agent = "donkey", script = "sound_specialairhi", category = ACMD_SOUND )]
+#[acmd_script( agent = "donkey", script = "sound_specialairbarrel", category = ACMD_SOUND )]
 unsafe fn sound_specialairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
@@ -104,13 +104,19 @@ unsafe fn sound_specialairhi(fighter: &mut L2CAgentBase) {
 
 }
 
-#[acmd_script( agent = "donkey", script = "game_specialairhilaunch", category = ACMD_GAME )]
+#[acmd_script( agent = "donkey", script = "game_specialairbarrellaunch", category = ACMD_GAME )]
 unsafe fn game_specialairhi_launch(fighter: &mut L2CAgentBase) {
     let boma = fighter.module_accessor;
     let mut barrelBoma = fighter.module_accessor;
 
-    frame(fighter.lua_state_agent, 30.0);
     if macros::is_excute(fighter) {
+        JostleModule::set_status(fighter.module_accessor, false);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("rot"), 7.0, 107, 60, 0, 70, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.5);
+    }
+    frame(fighter.lua_state_agent, 6.0);
+    if macros::is_excute(fighter) {
+        notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ALWAYS_BOTH_SIDES);
     }
 }
 

@@ -6,5 +6,11 @@ function Get-TimeStamp {
 
 $modPath = Get-Item -Path .\modPath.txt | Get-Content -Tail 1
 
-cargo skyline install --install-path $modPath
-"$(Get-TimeStamp) Installed plugin!"
+If ($args[0] -like "*dev*") {
+    cargo skyline install --install-path rom:/smashline/development.nro
+    Write-Output "$(Get-TimeStamp) Installed dev plugin"
+}
+else{
+    cargo skyline install --install-path $modPath
+    Write-Output "$(Get-TimeStamp) Installed plugin"
+}

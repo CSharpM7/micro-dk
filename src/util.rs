@@ -12,7 +12,7 @@ pub unsafe fn get_entry_from_boma(boma: *mut BattleObjectModuleAccessor) -> usiz
     return WorkModule::get_int(boma, *FIGHTER_INSTANCE_WORK_ID_INT_ENTRY_ID) as usize
 }
 pub unsafe fn get_entry(fighter: &mut L2CAgentBase) -> usize {
-    return get_entry_from_boma(fighter.module_accessor);
+    return get_entry_from_boma(fighter.module_accessor) as usize;
 }
 pub unsafe fn get_article_boma(boma: *mut BattleObjectModuleAccessor, article_type: skyline::libc::c_int) -> *mut BattleObjectModuleAccessor {
     let article = ArticleModule::get_article(boma, article_type);

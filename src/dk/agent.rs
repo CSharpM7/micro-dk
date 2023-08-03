@@ -1,25 +1,17 @@
-use super::*;
-
-pub const CHECK_SPECIAL_HI_UNIQ:            i32 = 0x3A;
-
+use crate::imports::imports_agent::*;
 
 unsafe extern "C" fn special_hi_preU(fighter: &mut L2CFighterCommon) -> L2CValue {
-    let entry = get_entry_from_boma(fighter.module_accessor);
-    if StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR
-    {
-        return true.into();
-    }
-    else
-    {
+    //Check to make sure we dont have an item
+    let entry = get_entry_from_boma(fighter.module_accessor) as usize;
+    if !StatusModule::situation_kind(fighter.module_accessor) == *SITUATION_KIND_AIR{
         if ItemModule::is_have_item(fighter.module_accessor, 0)
-        || vars::BARREL_TIMER[entry]>0{
+        || crate::vars::BARREL_TIMER[entry]>0
+        //|| is_HDR() 
+        {
             return false.into();
         }
-        else
-        {
-            return true.into();
-        }
     }
+    return FIGHTER_STATUS_KIND_SPECIAL_LW.into();
 }
 unsafe fn agent_start(fighter: &mut L2CFighterCommon)
 {
@@ -27,10 +19,9 @@ unsafe fn agent_start(fighter: &mut L2CFighterCommon)
     if fighter_kind != *FIGHTER_KIND_DONKEY {
         return;
     }
-    let entry = get_entry_from_boma(fighter.module_accessor);
-    vars::BARREL_TIMER[entry] = 0;
-    fighter.global_table[CHECK_SPECIAL_HI_UNIQ].assign(&L2CValue::Ptr(special_hi_preU as *const () as _));
-
+    let entry = get_entry_from_boma(fighter.module_accessor) as usize;
+    crate::vars::BARREL_TIMER[entry] = 0;
+    fighter.global_table[USE_SPECIAL_HI_CALLBACK].assign(&L2CValue::Ptr(special_hi_preU as *const () as _));
 }
 #[smashline::fighter_init]
 fn agent_init(fighter: &mut L2CFighterCommon) {

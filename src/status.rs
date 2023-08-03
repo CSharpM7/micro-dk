@@ -44,7 +44,6 @@ unsafe fn dk_specialhi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
         if (MotionModule::frame(fighter.module_accessor) > 1.0
         && MotionModule::frame(fighter.module_accessor) < 61.0)
         {
-            //MotionModule::set_frame_sync_anim_cmd(fighter.module_accessor, 61.0,true,true,false);
             MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_landing_hi"), 61.0, 1.0, false, 0.0, false, false);
         }
     }
@@ -64,26 +63,23 @@ unsafe fn dk_specialhi_exec(fighter: &mut L2CFighterCommon) -> L2CValue {
 
 unsafe fn dk_specialhi_start_exec(fighter: &mut L2CFighterCommon) {
 
+    //Freeze in place//
     sv_kinetic_energy!(
         clear_speed,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_STOP
-      );
-      sv_kinetic_energy!(
+    );
+    sv_kinetic_energy!(
         clear_speed,
         fighter,
         FIGHTER_KINETIC_ENERGY_ID_GRAVITY
-      );
-      KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-      /* 
-      sv_kinetic_energy!(
-        set_accel,
-        fighter,
-        FIGHTER_KINETIC_ENERGY_ID_GRAVITY,
-        0.0
-      );
-      */
+    );
+    KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
 
+    if !ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL){
+        StatusModule::change_status_request(fighter.module_accessor, *FIGHTER_STATUS_KIND_FALL_SPECIAL, false);
+        return;
+    }
     let barrelBoma = get_article_boma(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL);
     let barrelMotion = MotionModule::motion_kind(barrelBoma);
     let barrelFrame = MotionModule::frame(barrelBoma);
@@ -91,6 +87,7 @@ unsafe fn dk_specialhi_start_exec(fighter: &mut L2CFighterCommon) {
     let canLaunch = barrelMotion == Hash40::new("special_air_hi_aim").hash;
     if (frame <10.0)
     {
+        //Either being launch, or rotate barrel
         if canLaunch
         {
             if (ControlModule::get_command_flag_cat(fighter.module_accessor, 0) & *FIGHTER_PAD_CMD_CAT1_FLAG_SPECIAL_ANY) != 0
@@ -105,8 +102,8 @@ unsafe fn dk_specialhi_start_exec(fighter: &mut L2CFighterCommon) {
                 let angle = barrelFrame-45.0;
                 println!("Request launch at angle {}",angle);
 
-                let entry = get_entry_from_boma(fighter.module_accessor);
-                vars::BARREL_ANGLE[entry] = angle;
+                let entry = get_entry_from_boma(fighter.module_accessor) as usize;
+                crate::vars::BARREL_ANGLE[entry] = angle;
                 PostureModule::set_rot(barrelBoma, &Vector3f{x: angle, y:0.0, z:0.0}, 0);
             }
 
@@ -118,19 +115,21 @@ unsafe fn dk_specialhi_start_exec(fighter: &mut L2CFighterCommon) {
                 ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, -rate);
             }
         }
+        //Begin rotation
         else if MotionModule::is_end(barrelBoma)
         || barrelFrame >= 12.0
         {
             ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, 
                 Hash40::new("special_air_hi_aim"),
             true, 45.0);
-            ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, 3.0*PostureModule::lr(fighter.module_accessor));
+            let lr = if (*PostureModule::pos(fighter.module_accessor)).x < 0.0 {-1.0} else {1.0};
+            ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, 3.0*lr);
         }
 
     }
     else {
-        let entry = get_entry_from_boma(fighter.module_accessor);
-        let angle = vars::BARREL_ANGLE[entry];
+        let entry = get_entry_from_boma(fighter.module_accessor) as usize;
+        let angle = crate::vars::BARREL_ANGLE[entry];
 
         if frame >= 28.0{
             macros::EFFECT(fighter, Hash40::new("donkey_entry"), Hash40::new("top"), 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, true);
@@ -144,19 +143,11 @@ unsafe fn dk_specialhi_start_exec(fighter: &mut L2CFighterCommon) {
                 PostureModule::update_rot_y_lr(fighter.module_accessor);
             }
 
-/* 
-            //ModelModule::set_visibility(boma, true);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_GROUND_MOT_FRAME);
-            //WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_CLIFF_CHECK);
-            WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_YACL_DEFAULT);
-
-            //StatusModule::change_status_force(fighter.module_accessor,*FIGHTER_STATUS_KIND_GIMMICK_BARREL,false);
-*/
             KineticModule::change_kinetic(fighter.module_accessor, *FIGHTER_KINETIC_TYPE_SUPER_JUMP_PUNCH_AIR);
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_GRAVITY);
-/* */
+
             let speed_max = 0.5;
-            let accel = 0.0075;
+            let accel = 0.0125;
             KineticModule::enable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
             sv_kinetic_energy!(
                 set_stable_speed,
@@ -191,8 +182,8 @@ unsafe fn dk_specialhi_start_exec(fighter: &mut L2CFighterCommon) {
 
 unsafe fn dk_specialhi_launch_exec(fighter: &mut L2CFighterCommon){
 
-    let entry = get_entry_from_boma(fighter.module_accessor);
-    let angle = vars::BARREL_ANGLE[entry];
+    let entry = get_entry_from_boma(fighter.module_accessor) as usize;
+    let angle = crate::vars::BARREL_ANGLE[entry];
     let speed_x= (angle.to_radians()).sin()*3.0;
     let speed_y = KineticModule::get_sum_speed_y(fighter.module_accessor, *KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
     let min_y = -10.0;

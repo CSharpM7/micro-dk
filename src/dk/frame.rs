@@ -1,14 +1,14 @@
-use super::*;
+use crate::imports::imports_agent::*;
 
 unsafe fn barrel_timer(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectModuleAccessor,status: i32)
 {
-    let entry = get_entry_from_boma(boma);
-    let mut current_time = vars::BARREL_TIMER[entry];
+    let entry = get_entry_from_boma(boma) as usize;
+    let mut current_time = crate::vars::BARREL_TIMER[entry];
     if (current_time>0)
     && status != *FIGHTER_STATUS_KIND_ITEM_THROW_HEAVY
     {
         current_time-=1;
-        vars::BARREL_TIMER[entry] = current_time;
+        crate::vars::BARREL_TIMER[entry] = current_time;
         if (current_time==0)
         {
             let lr = PostureModule::lr(boma);

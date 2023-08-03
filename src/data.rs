@@ -10,7 +10,7 @@ use std::{
 };
 use arcropolis_api;
 
-pub mod gamemodes{
+pub mod gamemode {
     use super::*;
     use lazy_static::lazy_static;
     
