@@ -18,6 +18,7 @@ unsafe fn game_speciallandinghi(fighter: &mut L2CAgentBase) {
 
     frame(fighter.lua_state_agent, 62.0);
     if macros::is_excute(fighter) {
+        /* 
         sv_kinetic_energy!(
             reset_energy,
             fighter,
@@ -29,7 +30,12 @@ unsafe fn game_speciallandinghi(fighter: &mut L2CAgentBase) {
             0.0,
             0.0
         );
-        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
+        KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);*/
+        macros::ATTACK(fighter, 0, 0, Hash40::new("top"), 7.0, 361, 60, 0, 70, 5.0, 0.0, 11.0, 20.0, Some(0.0), Some(11.0), Some(-4.0), 2.0, 1.0, *ATTACK_SETOFF_KIND_ON, *ATTACK_LR_CHECK_POS, false, 0, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
+    }
+    wait(fighter.lua_state_agent, 2.0);
+    if macros::is_excute(fighter) {
+        AttackModule::clear_all(fighter.module_accessor);
     }
 }
 
@@ -66,6 +72,7 @@ unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
         VisibilityModule::set_model_visible(boma, false);
+        ArticleModule::remove_exist(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, ArticleOperationTarget(*ARTICLE_OPE_TARGET_ALL));
 
         ArticleModule::generate_article(boma, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL,true,0);
         if ArticleModule::is_exist(boma, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL) {
@@ -99,9 +106,15 @@ unsafe fn effect_specialairhi(fighter: &mut L2CAgentBase) {
 unsafe fn sound_specialairhi(fighter: &mut L2CAgentBase) {
     frame(fighter.lua_state_agent, 1.0);
     if macros::is_excute(fighter) {
-        macros::PLAY_SE(fighter, Hash40::new("se_donkey_special_h02"));
+        macros::PLAY_SE(fighter, Hash40::new("se_donkey_special_l01"));
     }
-
+}
+#[acmd_script( agent = "donkey", script = "sound_specialairbarrel", category = ACMD_SOUND )]
+unsafe fn expression_specialairhi(fighter: &mut L2CAgentBase) {
+    frame(fighter.lua_state_agent, 1.0);
+    if macros::is_excute(fighter) {
+        ControlModule::set_rumble(fighter.module_accessor, Hash40::new("rbkind_stg_power_up"), 0, false, *BATTLE_OBJECT_ID_INVALID as u32);
+    }
 }
 
 #[acmd_script( agent = "donkey", script = "game_specialairbarrellaunch", category = ACMD_GAME )]
@@ -111,7 +124,7 @@ unsafe fn game_specialairhi_launch(fighter: &mut L2CAgentBase) {
 
     if macros::is_excute(fighter) {
         JostleModule::set_status(fighter.module_accessor, false);
-        macros::ATTACK(fighter, 0, 0, Hash40::new("rot"), 7.0, 107, 60, 0, 70, 3.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_cutup"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_CUTUP, *ATTACK_REGION_SWORD);
+        macros::ATTACK(fighter, 0, 0, Hash40::new("rot"), 7.0, 363, 60, 0, 70, 5.0, 0.0, -2.0, 9.0, Some(0.0), Some(-2.0), Some(-4.0), 0.5, 1.0, *ATTACK_SETOFF_KIND_OFF, *ATTACK_LR_CHECK_F, false, -3, 0.0, 0, false, false, false, false, true, *COLLISION_SITUATION_MASK_GA, *COLLISION_CATEGORY_MASK_ALL, *COLLISION_PART_MASK_ALL, false, Hash40::new("collision_attr_normal"), *ATTACK_SOUND_LEVEL_M, *COLLISION_SOUND_ATTR_KICK, *ATTACK_REGION_BODY);
         macros::ATK_SET_SHIELD_SETOFF_MUL(fighter, 0, 0.5);
     }
     frame(fighter.lua_state_agent, 6.0);
@@ -129,6 +142,7 @@ pub fn install() {
         game_specialairhi,
         effect_specialairhi,
         sound_specialairhi,
+        expression_specialairhi,
 
         game_specialairhi_launch,
         game_speciallandinghi,

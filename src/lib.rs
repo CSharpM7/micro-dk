@@ -16,23 +16,9 @@ use smash::{
         LuaConst,
         lua_const::*
     },
-    //lib::,
-    app::{
-        *,
-        self,
-        sv_animcmd::{
-            frame,
-            wait
-        },
-        lua_bind::*
-    },
     hash40,
     lua2cpp::*,
     phx::*
-};
-use smash_script::{
-    *,
-    macros::*
 };
 use smashline::*;
 
@@ -55,16 +41,20 @@ unsafe fn get_article_use_type_mask(weapon_kind: i32, entry_id: i32) -> u8 {
     call_original!(weapon_kind, entry_id)
 }
 
+
 #[skyline::main(name = "smashline_dk")]
 pub fn main() {
+    #[cfg(feature = "devhook")]{
+        skyline::install_hooks!(
+            get_article_use_type_mask
+        ); 
+        println!("[smashline_dk::main] Dev Hook Installed");
+        return;
+    }
     println!("[smashline_dk::main] Loading...");
     //data::install();
     data::gamemode::set_gamemode();
     dk::install();
     println!("[smashline_dk::main] Loaded!");
-    
-    skyline::install_hooks!(
-        get_article_use_type_mask
-    );
     
 }

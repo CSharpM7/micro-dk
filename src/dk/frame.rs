@@ -52,20 +52,41 @@ unsafe fn barrel_air_despawn(fighter: &mut L2CFighterCommon,boma: &mut BattleObj
 }
 
 
+unsafe fn dk_update(fighter: &mut L2CFighterCommon) {
+    let status_kind = StatusModule::status_kind(fighter.module_accessor);
+    let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
+    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    barrel_timer(fighter,boma,status_kind);
+    barrel_air_despawn(fighter,boma,status_kind,motion_kind);
+}
+
 #[fighter_frame( agent = FIGHTER_KIND_DONKEY )]
-fn dk_update(fighter: &mut L2CFighterCommon) {
+fn dk_frame(fighter: &mut L2CFighterCommon) {
     unsafe {
-        let status_kind = StatusModule::status_kind(fighter.module_accessor);
-        let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
+        dk_update(fighter);
+    }
+}
+#[smashline::fighter_frame_callback]
+fn global_fighter_frame(fighter: &mut L2CFighterCommon) {
+    unsafe{
         let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
-        barrel_timer(fighter,boma,status_kind);
-        barrel_air_despawn(fighter,boma,status_kind,motion_kind);
+        let category = smash::app::utility::get_category(boma);
+        let kind = smash::app::utility::get_kind(boma);
+        if category == BATTLE_OBJECT_CATEGORY_FIGHTER && kind == FIGHTER_KIND_DONKEY {
+            dk_update(fighter);
+        }
     }
 }
 
 
 pub fn install() {
-    smashline::install_agent_frames!(
-        dk_update
+    //#[cfg((feature = "dev"))]
+    smashline::install_agent_frame_callbacks!(
+      global_fighter_frame
     );
+    /* 
+    #[cfg(not(feature = "dev"))]
+    smashline::install_agent_frames!(
+        samus_frame
+    );*/
 }

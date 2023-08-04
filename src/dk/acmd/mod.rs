@@ -1,5 +1,7 @@
-mod upspecial;
+mod specialbarrel;
+mod attacklw4;
 
 pub fn install() {
-    upspecial::install();
+    attacklw4::install();
+    specialbarrel::install();
 }
