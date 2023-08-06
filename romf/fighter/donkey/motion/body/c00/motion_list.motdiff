@@ -1,0 +1,116 @@
+---
+motion_path: ~
+altered:
+  attack_lw4:
+    game_script: ~
+    flags:
+      turn: ~
+      loop: ~
+      move: ~
+      fix_trans: ~
+      fix_rot: ~
+      fix_scale: ~
+      unk_40: ~
+      unk_80: ~
+      unk_100: ~
+      unk_200: ~
+      unk_400: ~
+    blend_frames: 0
+    animations: []
+    scripts: []
+    extra:
+      Some:
+        xlu_start: 0
+        xlu_end: 0
+        cancel_frame: 251
+        no_stop_intp: ~
+  special_lw_loop:
+    game_script: ~
+    flags:
+      turn: ~
+      loop: true
+      move: ~
+      fix_trans: ~
+      fix_rot: ~
+      fix_scale: ~
+      unk_40: ~
+      unk_80: true
+      unk_100: ~
+      unk_200: ~
+      unk_400: ~
+    blend_frames: 0
+    animations:
+      - Altered:
+          index: 0
+          changes:
+            - name: h07itemscrew.nuanmb
+              unk: 0
+    scripts:
+      - Altered:
+          index: 0
+          changes:
+            - expression_barrelscrew
+            - sound_barrelscrew
+            - effect_barrelscrew
+    extra: NoChange
+  special_lw_end:
+    game_script: ~
+    flags:
+      turn: ~
+      loop: ~
+      move: true
+      fix_trans: ~
+      fix_rot: ~
+      fix_scale: ~
+      unk_40: ~
+      unk_80: ~
+      unk_100: ~
+      unk_200: ~
+      unk_400: ~
+    blend_frames: 0
+    animations:
+      - Altered:
+          index: 0
+          changes:
+            - name: d02specialhi.nuanmb
+              unk: 0
+    scripts:
+      - Altered:
+          index: 2
+          changes:
+            - effect_specialhi
+    extra:
+      Some:
+        xlu_start: 0
+        xlu_end: 0
+        cancel_frame: 91
+        no_stop_intp: true
+  special_air_lw:
+    game_script: ~
+    flags:
+      turn: ~
+      loop: ~
+      move: ~
+      fix_trans: ~
+      fix_rot: ~
+      fix_scale: ~
+      unk_40: ~
+      unk_80: ~
+      unk_100: ~
+      unk_200: ~
+      unk_400: ~
+    blend_frames: 0
+    animations:
+      - Altered:
+          index: 0
+          changes:
+            - name: d02specialairhi.nuanmb
+              unk: 0
+    scripts: []
+    extra:
+      Some:
+        xlu_start: 0
+        xlu_end: 0
+        cancel_frame: 206
+        no_stop_intp: true
+removed: []

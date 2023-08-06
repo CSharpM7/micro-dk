@@ -1,0 +1,30 @@
+attack_lw4:
+  extra:
+    cancel_frame: 51
+special_air_lw:
+  animations:
+  - name: d02specialairhi.nuanmb
+  extra:
+    cancel_frame: 0
+special_lw_end:
+  flags:
+    move: true
+  animations:
+  - name: d02specialhi.nuanmb
+  scripts:
+  - expression_speciallwend
+  - sound_speciallwend
+  - effect_specialhi
+  extra:
+    cancel_frame: 105
+    freeze_during_hitstop: true
+special_lw_loop:
+  flags:
+    loop: true
+    unk_80: true
+  animations:
+  - name: h07itemscrew.nuanmb
+  scripts:
+  - expression_barrelscrew
+  - sound_barrelscrew
+  - effect_barrelscrew

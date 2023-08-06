@@ -1,7 +1,9 @@
-display_name="Wario's Moveset Shake-up"
+display_name="DK's Barrel Blast"
 description="""
-Some of Wario's moves have been changed to more accurately reflect his Wario Land/World abilities! Is this the new top tier to fear?
-Requires Smashline and Skyline
+DK with a recovery and a projectile?!? His new upspecial allows him to spawn barrels on the ground, or hop into a barrel cannon in the air. Spinning Kong is now down special, and his Hand Slap is now down smash!
+Requires (latest) Smashline and Skyline. Will not be compatible with mods on older smashline builds.
+
+For HDR: You might have to append the entries in hdrpatch/motion_patch.yaml to your hdr/fighter/donkey/body/motion_patch.yaml file. It's recommended you play with a custom copy of the base folder (ie hdr-custom) so that the base folder can remain 1:1 with the current HDR build
 """
 version="1.0"
 category="Param"

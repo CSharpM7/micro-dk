@@ -94,7 +94,7 @@ fn copy_dir_all(src: impl AsRef<Path>, dst: impl AsRef<Path>) -> io::Result<()> 
 pub fn patch_files()
 {
     unsafe {
-        let motionFolder = format!("{}/fighter/donkey/motion/dkbarrel",&*MOD_DIR.read().unwrap());
+        let motionFolder = format!("{}/fighter/donkey/motion/body",&*MOD_DIR.read().unwrap());
         let slots=8;
         if !Path::new(motionFolder.as_str()).exists()
         {
@@ -107,14 +107,15 @@ pub fn patch_files()
         for slot in 1..slots {
             let buffer = if slot<10 {"0"} else {""};
             let destFolder = format!("{}/c{}{}",motionFolder.as_str(),buffer,slot);
-            copy_dir_all(sourceFolder.as_str(),destFolder.as_str());
-            println!("[smashline_dk::data] copied motion files to {}",destFolder);
-            /*
             fs::create_dir_all(destFolder.as_str());
             let destFile = format!("{}/{}",destFolder,file);
+            if !Path::new(destFile.as_str()).exists() {
+            }
             fs::copy(sourceFile.as_str(), destFile.as_str());
-            println!("[smashline_dk::data] copied motion files to {}",destFile); */
+            println!("[smashline_dk::data] copied motion files to {}",destFile);
         }
+        let idFile = format!("{}/{}",&*MOD_DIR.read().unwrap(),IDENTIFIER);
+        fs::remove_file(idFile.as_str());
 
     }
     

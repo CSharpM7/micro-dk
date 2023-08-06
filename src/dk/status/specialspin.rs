@@ -127,7 +127,7 @@ unsafe fn dk_speciallw_main(fighter: &mut L2CFighterCommon) -> L2CValue {
             fighter.sub_fighter_cliff_check(0xa0.into());
         }
     }
-    let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) {Hash40::new("special_lw")} else {Hash40::new("special_air_lw")};
+    let motion = if fighter.is_situation(*SITUATION_KIND_GROUND) {Hash40::new("special_hi")} else {Hash40::new("special_air_hi")};
     MotionModule::change_motion(fighter.module_accessor, motion, 0.0, 1.0, false, 0.0, false, false);
     fighter.sub_shift_status_main(L2CValue::Ptr(speciallw_main_loop as *const () as _))
 }
@@ -139,25 +139,25 @@ unsafe extern "C" fn speciallw_main_helper(fighter: &mut L2CFighterCommon) {
         GroundModule::correct(fighter.module_accessor,GroundCorrectKind(*GROUND_CORRECT_KIND_AIR));
         notify_event_msc_cmd!(fighter, Hash40::new_raw(0x2127e37c07), *GROUND_CLIFF_CHECK_KIND_ON_DROP_BOTH_SIDES);
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_MOT_CHANGE){
-            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_lw"), 0.0, 1.0, false, 0.0, false, false);
+            MotionModule::change_motion(fighter.module_accessor, Hash40::new("special_air_hi"), 0.0, 1.0, false, 0.0, false, false);
             //let landing_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"),hash40("landing_frame"));
             //WorkModule::set_float(fighter.module_accessor, landing_frame, *FIGHTER_INSTANCE_WORK_ID_FLOAT_LANDING_FRAME);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_MOT_CHANGE);
         }
         else{
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_lw"), -1.0, 1.0, 0.0, false, false);
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_air_hi"), -1.0, 1.0, 0.0, false, false);
             EFFECT_OFF_KIND(fighter,Hash40::new_raw(0xd6dd4defe),false,false);
         }
     }
     else{
         GroundModule::correct(fighter.module_accessor,GroundCorrectKind(*GROUND_CORRECT_KIND_GROUND_CLIFF_STOP));
         if !WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_GROUND_MOT_FRAME){
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw"), -1.0, 1.0, 0.0, false, false);
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_hi"), -1.0, 1.0, 0.0, false, false);
         }
         else{
             AttackModule::clear_all(fighter.module_accessor);
             let ground_frame = WorkModule::get_param_float(fighter.module_accessor, hash40("param_special_hi"),hash40("ground_mot_frame"));
-            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_lw"), ground_frame-1.0, 1.0, 0.0, false, false);
+            MotionModule::change_motion_inherit_frame(fighter.module_accessor, Hash40::new("special_hi"), ground_frame-1.0, 1.0, 0.0, false, false);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_GROUND_SPINEND);
         }
     }

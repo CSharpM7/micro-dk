@@ -64,6 +64,10 @@ unsafe fn sound_attacklw4(agent: &mut L2CAgentBase) {
     if is_excute(agent) {
         STOP_SE(agent, Hash40::new("se_common_smash_start"));
     }
+    wait(agent.lua_state_agent, 1.0);
+    if is_excute(agent) {
+        PLAY_VC(agent, Hash40::new("vc_donkey_attack07"),0.375);
+    }
     frame(agent.lua_state_agent, 9.0+5.0);
     if is_excute(agent) {
         PLAY_SE(agent, Hash40::new("se_donkey_smash_l01"));

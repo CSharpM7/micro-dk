@@ -1,9 +1,9 @@
-mod specialhi;
-mod speciallw;
+mod specialbarrel;
+mod specialspin;
 mod attacklw4;
 
 pub fn install() {
-    specialhi::install();
-    speciallw::install();
+    specialbarrel::install();
+    specialspin::install();
     attacklw4::install();
 }

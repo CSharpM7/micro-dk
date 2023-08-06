@@ -27,7 +27,8 @@ unsafe fn barrel_timer(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectMod
 
 unsafe fn barrel_air_despawn(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectModuleAccessor,status: i32, motion: u64)
 {
-    if motion == Hash40::new("special_air_hi").hash {return;}
+    let launched = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_MOT_CHANGE);
+    if status == *FIGHTER_STATUS_KIND_SPECIAL_HI && !launched {return;}
 
     if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL)
     {

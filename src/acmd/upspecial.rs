@@ -61,26 +61,7 @@ unsafe fn sound_specialhi(fighter: &mut L2CAgentBase) {
 #[acmd_script( agent = "donkey", script = "game_specialairhi", category = ACMD_GAME )]
 unsafe fn game_specialairhi(fighter: &mut L2CAgentBase) {
     let boma = fighter.module_accessor;
-    let mut barrelBoma = fighter.module_accessor;
 
-    frame(fighter.lua_state_agent, 1.0);
-    if macros::is_excute(fighter) {
-        VisibilityModule::set_model_visible(boma, false);
-
-        ArticleModule::generate_article(boma, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL,true,0);
-        if ArticleModule::is_exist(boma, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL) {
-            barrelBoma = get_article_boma(boma, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL);
-
-            KineticModule::unable_energy(fighter.module_accessor, *FIGHTER_KINETIC_ENERGY_ID_CONTROL);
-            ArticleModule::change_motion(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, 
-                Hash40::new("special_air_hi"),
-            true, 0.0);
-            PostureModule::set_lr(barrelBoma, 1.0);
-            PostureModule::update_rot_y_lr(barrelBoma);
-            PostureModule::set_scale(barrelBoma,PostureModule::scale(fighter.module_accessor)*1.2,false);
-            PostureModule::add_pos(barrelBoma, &Vector3f{x: 0.0, y:8.6*PostureModule::scale(boma), z:0.0});
-        }
-    }
     frame(fighter.lua_state_agent, 5.0);
     if macros::is_excute(fighter) {
         MotionModule::set_rate(boma, 0.0);
