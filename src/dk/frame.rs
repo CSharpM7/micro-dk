@@ -1,6 +1,6 @@
 use crate::imports::imports_agent::*;
 
-unsafe fn barrel_timer(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectModuleAccessor,status: i32)
+unsafe fn barrel_timer(fighter: &mut L2CFighterCommon,boma: *mut BattleObjectModuleAccessor,status: i32)
 {
     let entry = get_entry_from_boma(boma) as usize;
     let mut current_time = crate::vars::BARREL_TIMER[entry];
@@ -25,7 +25,7 @@ unsafe fn barrel_timer(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectMod
 }
 
 
-unsafe fn barrel_air_despawn(fighter: &mut L2CFighterCommon,boma: &mut BattleObjectModuleAccessor,status: i32, motion: u64)
+unsafe fn barrel_air_despawn(fighter: &mut L2CFighterCommon,boma: *mut BattleObjectModuleAccessor,status: i32, motion: u64)
 {
     let launched = WorkModule::is_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_MOT_CHANGE);
     if status == *FIGHTER_STATUS_KIND_SPECIAL_HI && !launched {return;}
@@ -56,7 +56,7 @@ unsafe fn barrel_air_despawn(fighter: &mut L2CFighterCommon,boma: &mut BattleObj
 unsafe fn dk_update(fighter: &mut L2CFighterCommon) {
     let status_kind = StatusModule::status_kind(fighter.module_accessor);
     let motion_kind = MotionModule::motion_kind(fighter.module_accessor);
-    let boma = smash::app::sv_system::battle_object_module_accessor(fighter.lua_state_agent);
+    let boma = fighter.module_accessor;
     barrel_timer(fighter,boma,status_kind);
     barrel_air_despawn(fighter,boma,status_kind,motion_kind);
 }

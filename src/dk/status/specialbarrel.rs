@@ -56,6 +56,7 @@ unsafe fn dk_specialhi_init(fighter: &mut L2CFighterCommon) -> L2CValue {
         VisibilityModule::set_model_visible(fighter.module_accessor, false);
 
         ArticleModule::generate_article(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL,true,0);
+        println!("Request barrel spawn");
         if ArticleModule::is_exist(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL) {
             barrelBoma = get_article_boma(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL);
 
@@ -217,7 +218,7 @@ unsafe fn dk_specialhi_start_exec(fighter: &mut L2CFighterCommon) {
                 ArticleModule::set_rate(fighter.module_accessor, *FIGHTER_DONKEY_GENERATE_ARTICLE_DKBARREL, 1.0);
                 
                 let angle = barrelFrame-45.0;
-                println!("Request launch at angle {}",angle);
+                //println!("Request launch at angle {}",angle);
 
                 let entry = get_entry_from_boma(fighter.module_accessor) as usize;
                 crate::vars::BARREL_ANGLE[entry] = angle;
@@ -262,7 +263,7 @@ unsafe fn dk_specialhi_start_exec(fighter: &mut L2CFighterCommon) {
             let speed_x= (angle.to_radians()).sin()*speed;
             let speed_y= (angle.to_radians()).cos()*(speed*BARREL_SPEED_Y_MUL);
             let lr = PostureModule::lr(fighter.module_accessor);
-            println!("Launch! SpeedX: {} SpeedY: {}",speed_x,speed_y);
+            //println!("Launch! SpeedX: {} SpeedY: {}",speed_x,speed_y);
             SET_SPEED_EX(fighter,speed_x*lr,speed_y,*KINETIC_ENERGY_RESERVE_ATTRIBUTE_MAIN);
             WorkModule::on_flag(fighter.module_accessor, *FIGHTER_DONKEY_STATUS_SPECIAL_HI_FLAG_MOT_CHANGE);
 

@@ -4,4 +4,8 @@
 Cargo.lock
 **/blender
 **/release
-*.idsp
+**/romf
+romf
+build.ps1
+modPath.txt
+install.ps1

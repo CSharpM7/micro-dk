@@ -23,7 +23,6 @@ unsafe fn dk_attacklw4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
     if WorkModule::is_flag(fighter.module_accessor,*FIGHTER_DONKEY_STATUS_SPECIAL_LW_FLAG_ATTACK){
     //if AttackModule::is_attack(fighter.module_accessor, 0, false){
         if GroundModule::is_touch(fighter.module_accessor, *GROUND_TOUCH_FLAG_DOWN as u32){
-            println!("RotZ: {rot_z}");
             for i in 0..4 {
                 if AttackModule::is_attack(fighter.module_accessor, i, false){
                     let shift = if {lr>0.0} {2.0} else {-2.0};
@@ -61,7 +60,7 @@ unsafe fn dk_attacklw4_main_loop(fighter: &mut L2CFighterCommon) -> L2CValue {
                             println!("No ground");
                         }
                     }*/
-                    println!("Hitbox {i}: Attack X: {attack_x} Attack Y: {attack_y}");
+                    //println!("Hitbox {i}: Attack X: {attack_x} Attack Y: {attack_y}");
                     AttackModule::set_offset(fighter.module_accessor, i, &Vector3f{x: pos_z,y:attack_y,z:attack_x});
                 }
             }

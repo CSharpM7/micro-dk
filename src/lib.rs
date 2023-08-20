@@ -44,15 +44,15 @@ unsafe fn get_article_use_type_mask(weapon_kind: i32, entry_id: i32) -> u8 {
 
 #[skyline::main(name = "smashline_dk")]
 pub fn main() {
-    #[cfg(not(feature = "dev"))]{/* 
+    #[cfg(not(feature = "dev"))]{ 
         skyline::install_hooks!(
             get_article_use_type_mask
         ); 
-        */
         #[cfg(feature = "devhook")]{
         println!("[smashline_dk::main] Dev Hook Installed");
         return;
         }
+        println!("[smashline_dk::main] Hook installed");
     }
     println!("[smashline_dk::main] Loading...");
     //data::install();
